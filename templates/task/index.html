@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}All Tasks{% endblock %}
+
+{% block content %}
+	<h1 class="h1 text-center">Liste des Taches</h1>
+	<div>
+		{% for task in tasks %}
+		<div><h1>{{task.title}}</h1> </div>
+		<div>
+			<p>{{task.descibe}}</p>
+		</div>
+		{% endfor %}
+	</div>
+{% endblock %}
