@@ -1,0 +1,8 @@
+
+/* Exemple de personnalisation */
+body {
+    background-color: #f8f9fa;
+    background-image: url('/static/img/bg2.jpg');
+    background-size: cover;
+    background-position: center;
+}

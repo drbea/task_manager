@@ -4,5 +4,41 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-	<h1 class="h1 text-center">Bienvenu dans mon Task Manager</h1>
+	<div>
+		<div class="card-header my-5 py-5 font-size-bald">
+			<h1 class="h1 text-center">Bienvenu dans mon Task Manager</h1>
+			
+		</div>
+
+		<div class="container card-container">  <div class="card text-center mx-auto"> <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="all-tasks-tab" data-bs-toggle="tab" data-bs-target="#all-tasks" type="button" role="tab" aria-controls="all-tasks" aria-selected="true">Toutes les taches</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link {% if not request.user.is_authenticated %} disabled {% endif %}" id="my-tasks-tab" data-bs-toggle="tab" data-bs-target="#my-tasks" type="button" role="tab" aria-controls="my-tasks" aria-selected="false">Mes taches</button>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="all-tasks" role="tabpanel" aria-labelledby="all-tasks-tab">
+                <h5 class="card-title">Toutes les tâches</h5>
+                <p class="card-text">Affichage de toutes les tâches ici.  Vous pouvez voir la liste et les details de tâches d'autres utilisateurs.</p>
+                <a type="button" href="{% url 'task:index' %}" class="btn btn-primary">
+				  Voir toutes les tâches <span class="badge text-bg-secondary">4</span>
+				</a>
+                <!-- <a href="#" class="btn btn-primary">Voir toutes les tâches</a> -->
+            </div>
+            <div class="tab-pane fade" id="my-tasks" role="tabpanel" aria-labelledby="my-tasks-tab">
+                <h5 class="card-title">Mes tâches</h5>
+                <p class="card-text">Affichage de vos taches.  Ici, vous pouvez ajouter, modifier ou supprimer une liste de tâches spécifiques.</p>
+                <a type="button" href="{% url 'task:task_by_user' request.user.id %}" class="btn btn-primary">
+				  Voir mes tâches <span class="badge text-bg-secondary">4</span>
+				</a>
+            </div>
+        </div>
+    </div>
+</div>
+	</div>
+
 {% endblock %}
