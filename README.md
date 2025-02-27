@@ -21,5 +21,20 @@
 ```bash
 git clone https://github.com/drbea/task_manager.git
 ```
+puis deplacer vous dans le dossier du projet
+```bash
+    cd task_manager
+```
+- 4 installer les dependances:
+    Note: je n'ai pas encore ajouter les dependances dans un fichier donc
+  dans votre termial
+  ```bash
+  pip install django pillow
+```
+- 5 lancer le serveur local
+```bash
+    python manage.py runserver
+```
 
+- ouvrir votre navigateur et mettre ceci dans la barre de recherche:   http://localhost:8000/
   
