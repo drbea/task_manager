@@ -52,8 +52,6 @@
             if (event.target.id === 'saveTaskButton') {
                 const form = document.getElementById('editTaskForm');
                 const formData = new FormData(form);
-
-
                 
                 fetch(`/task/edit/${taskId}/`, {
                     method: 'POST',
