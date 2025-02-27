@@ -1,8 +1,42 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Tache for you{% endblock %}
+{% block title %}Mes Tâches{% endblock %}
 
 {% block content %}
-<h1 class="h1">mes taches</h1>
+    <h1 class="h1 text-center">Mes Tâches</h1>
+    <div class="container mt-5">
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for task in tasks %}
+                <div class="col" id="task-{{ task.id }}">
+                    <div class="card border-primary mb-3">
+                        <div class="card-header bg-transparent border-primary d-flex justify-content-between align-items-center">
+                            <span>{{ task.title }}</span>
+                            <span class="badge {% if task.status == 'encours' %} btn-sucess {% else %} bg-danger {% endif %}">{{ task.status }}</span>
+                        </div>
+                        <div class="card-body text-primary">
+                            <span class="card-title text-black my-2">depuis: {{ task.created|timesince }}</span>
+                            <p>{{ task.content }}</p>
+                        </div>
+                        <div class="card-footer bg-transparent border-primary d-flex justify-content-between align-items-center">
+                            <span class="text-muted">Par: {{ task.author.username }}</span>
+                            <div>
+                                <button type="button" class="btn btn-sm btn-outline-primary me-2"><i class="fas fa-edit"></i> Modifier</button>
+                                <button type="button" class="btn btn-sm btn-danger" onclick="deleteTask({{ task.id }})"><i class="fas fa-trash-alt"></i> Supprimer</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}
+
+{% block js %}
+<script type="" src="{% static 'js/task/script.js' %}"></script>
+{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/task/styles.css' %}">
+{% endblock %}
+

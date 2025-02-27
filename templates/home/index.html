@@ -32,7 +32,8 @@
             <div class="tab-pane fade" id="my-tasks" role="tabpanel" aria-labelledby="my-tasks-tab">
                 <h5 class="card-title">Mes tâches</h5>
                 <p class="card-text">Affichage de vos taches.  Ici, vous pouvez ajouter, modifier ou supprimer une liste de tâches spécifiques.</p>
-                <a type="button" href="{% url 'task:task_by_user' request.user.id %}" class="btn btn-primary">
+                
+                <a type="button" href="{% if request.user.is_authenticated %}  {% url 'task:task_by_user' request.user.id %} {% else %} # {% endif %}" class="btn btn-primary">
 				  Voir mes tâches <span class="badge text-bg-secondary">4</span>
 				</a>
             </div>

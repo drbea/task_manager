@@ -8,7 +8,7 @@
     <div class="collapse navbar-collapse" id="navbarScroll">
       <ul class="navbar-nav ms-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Acceuil</a>
+          <a class="nav-link active" aria-current="page" href="{% url 'home:index' %}">Acceuil</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'task:index' %}">Taches</a>
@@ -19,8 +19,8 @@
 	            authentification
 	          </a>
 	          <ul class="dropdown-menu">
-	            <li><a class="dropdown-item" href="#">Connexion</a></li>
-	            <li><a class="dropdown-item" href="#">Inscription</a></li>
+	            <li><a class="dropdown-item" href="{% url 'home:login' %}">Connexion</a></li>
+	            <li><a class="dropdown-item" href="{% url 'home:register' %}">Inscription</a></li>
 	            <li><hr class="dropdown-divider"></li>
 	            <!-- <li><a class="dropdown-item" href="#">Something else here</a></li> -->
 	          </ul>
@@ -41,7 +41,7 @@
         {% endif %}
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled" aria-disabled="true">Link</a>
+          <a class="nav-link disabled" href="{% url 'task:add_task' %}" aria-disabled="true">Ajouter une tache</a>
         </li>
       </ul>
       <form class="d-flex" role="search">

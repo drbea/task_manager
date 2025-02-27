@@ -1,0 +1,31 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Modifier la tâche</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form id="editTaskForm" method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="title" class="form-label">Titre</label>
+                    <input type="text" class="form-control" name="title" id="title" value="{{ task.title }}" required>
+                </div>
+                <div class="mb-3">
+                    <label for="content" class="form-label">Contenu</label>
+                    <textarea class="form-control" name="content" id="content">{{ task.content }}</textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="status" class="form-label">Statut</label>
+                    <select class="form-select" name="status" id="status" required>
+                        <option value="encours" {% if task.status == 'encours' %}selected{% endif %}>En cours</option>
+                        <option value="terminer" {% if task.status == 'terminer' %}selected{% endif %}>Terminer</option>
+                    </select>
+                </div>
+                <button type="button" class="btn btn-primary" id="saveTaskButton">Enregistrer</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+    <script type="" src="{% static 'js/task/script.js' %}"></script>

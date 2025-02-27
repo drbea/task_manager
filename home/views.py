@@ -41,6 +41,14 @@ def log_in(request):
     return render(request, "home/login.html")
 
 def register(request):
-
-    return render(request, "accounts/sign_in.html")
+    if request.method == "POST":
+        username = request.POST.get("username")
+        password = request.POST.get("password")
+        try:
+            user = User.objects.create_user(username=username, password=password)
+            login(request, user)
+            return JsonResponse({'success': True, 'redirect_url': reverse("home:index")}) # Redirection en cas de succès
+        except Exception as e:
+            return JsonResponse({'success': False, 'error': str(e)}) # Erreur si l'inscription échoue
+    return render(request, "home/sign_in.html")
 

@@ -4,105 +4,76 @@
 {% block title %}All Tasks{% endblock %}
 
 {% block content %}
-	<h1 class="h1 text-center">Liste des Taches</h1>
-	<div class="container mt-5">
+    <h1 class="h1 text-center">Liste des Taches</h1>
+    <div class="container mt-5">
         <div class="row row-cols-1 row-cols-md-3 g-4">
-        	{% for task in tasks %}
-				<div class="col" id="task-{{ task.id }}">
-				    <div class="card border-primary mb-3">
-				        <div class="card-header bg-transparent border-primary d-flex justify-content-between align-items-center">
-				            <span>{{ task.title }} </span>
-				            <span class="badge {% if task.status == 'encours' %} btn-sucess {% else %} bg-danger {% endif %}">{{ task.status }}</span>
-				        </div>
-				        <div class="card-body text-primary">
-				            <span class="card-title text-black my-2">depuis: {{ task.created|timesince }}</span>
-				            <p>{{ task.content }}</p>
-				        </div>
-				        <div class="card-footer bg-transparent border-primary d-flex justify-content-between align-items-center">
-				            <span class="text-muted">Par: {{ task.author.username }}</span>  <div>  <button type="button" class="btn btn-sm btn-outline-primary me-2"><i class="fas fa-edit"></i> Modifier</button>
-				                <button type="button" class="btn btn-sm btn-danger" onclick="deleteTask({{ task.id }})"><i class="fas fa-trash-alt"></i> Supprimer</button>
-				            </div>
-				        </div>
-				    </div>
-				</div>
-			{% endfor %}
+            <div class="modal fade" id="editTaskModal" tabindex="-1" aria-labelledby="editTaskModalLabel" aria-hidden="true">
+                <div id="editTaskModalContent"></div>
+            </div>
+            {% for task in tasks %}
+                <div class="col" id="task-{{ task.id }}">
+                    <div class="card border-primary mb-3">
+                        <div class="card-header bg-transparent border-primary d-flex justify-content-between align-items-center">
+                            <span>{{ task.title }} </span>
+                            <span class="badge {% if task.status == 'encours' %} btn-danger {% else %} bg-success {% endif %}">{{ task.status|safe }}</span>
+                        </div>
+                        <div class="card-body text-primary">
+                            <span class="card-title text-black my-2">depuis: {{ task.created|timesince }}</span>
+                            <p>{{ task.content }}</p>
+                        </div>
+                        <div class="card-footer bg-transparent border-primary d-flex justify-content-between align-items-center">
+                            <span class="text-muted">Par: {{ task.author.username }}</span> 
+                            <div>
+                                {% if not request.user == task.author %}
+                                    <!-- <button type="button"  class="btn btn-sm btn-outline-primary me-2 disabled"><i class="fas fa-edit"></i> Modifier</button>
+                                    <button type="button" class="btn btn-sm btn-danger disabled" onclick="deleteTask({{ task.id }})"><i class="fas fa-trash-alt"></i> Supprimer</button> -->
+                                {% else %}
+                                    <button type="button" onclick="editTask({{ task.id }})" class="btn btn-sm btn-outline-primary me-2"><i class="fas fa-edit"></i> Modifier</button>
+                                    <button type="button" class="btn btn-sm btn-danger" onclick="deleteTask({{ task.id }})"><i class="fas fa-trash-alt"></i> Supprimer</button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
     </div>
-
 {% endblock %}
-   <style>
-        .card {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-            transition: transform 0.2s; /* Add a hover effect */
-        }
 
-        .card:hover {
-            transform: translateY(-5px); /* Move card up slightly on hover */
-        }
-
-        .card-footer .btn {
-            margin: 0 5px; /* Add some spacing between buttons */
-        }
-        .list-group-item{
-            display: flex;
-            align-items: center; /* Align items vertically */
-        }
-        .list-group-item input[type="checkbox"] {
-            margin-right: 10px; /* Add space between checkbox and text */
-        }
-
-         h6 {
-      display: inline-block;
-       width: fit-content;
-        white-space: nowrap;
-    }
-    </style>
-
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/task/styles.css' %}">
+{% endblock %}
 
 {% block js %}
-<script>
-  function deleteTask(taskId) {
-    if (confirm("Êtes-vous sûr de vouloir supprimer cette tâche ?")) {
-      fetch(`/task/delete/${taskId}/`, {
-        method: 'POST',
-        headers: {
-          'X-CSRFToken': getCookie('csrftoken'), // Important pour Django
-          'Content-Type': 'application/json'
-        },
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.status === 'success') {
-          // Supprimer l'élément de la tâche de la page
-          const taskElement = document.getElementById(`task-${taskId}`);
-          if (taskElement) {
-            taskElement.remove();
-            alert("Tâche supprimée avec succès.");
-          }
-        } else {
-          alert("Erreur lors de la suppression de la tâche.");
-          console.error("Erreur lors de la suppression :", data.message); 
-          alert(`Erreur lors de la suppression de la tâche: ${data.message}`); // 
-        }
-      });
-    }
-  }
+    <script type="" src="{% static 'js/task/script.js' %}"></script>
 
-  // Fonction pour récupérer le token CSRF (nécessaire pour Django)
-  function getCookie(name) {
-    let cookieValue = null;
-    if (document.cookie && document.cookie !== '') {
-      const cookies = document.cookie.split(';');
-      for (let i = 0; i < cookies.length; i++) {
-        const cookie = cookies[i].trim();
-        // Est-ce que ce cookie correspond au nom que nous recherchons ?
-        if (cookie.substring(0, name.length + 1) === (name + '=')) {
-          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-          break;
-        }
-      }
-    }
-    return cookieValue;
-  }
-</script>
+    <script type="text/javascript">
+        document.getElementById('editTaskModalContent').addEventListener('click', function(event) {
+            if (event.target.id === 'saveTaskButton') {
+                const form = document.getElementById('editTaskForm');
+                const formData = new FormData(form);
+
+
+                
+                fetch(`/task/edit/${taskId}/`, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': formData.get('csrfmiddlewaretoken')
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        document.getElementById(`task-{{ task.id }}`).querySelector('.card-header span:first-child').textContent = data.task.title;
+                        document.getElementById(`task-{{ task.id }}`).querySelector('.card-body p').textContent = data.task.content;
+                        document.getElementById(`task-{{ task.id }}`).querySelector('.card-header span:last-child').textContent = data.task.status;
+                        $('#editTaskModal').modal('hide');
+                    } else {
+                        alert(data.message || 'Erreur lors de la modification de la tâche.');
+                    }
+                });
+            }
+        });
+    </script>
 {% endblock %}
