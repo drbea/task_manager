@@ -17,5 +17,9 @@
   ```bash
   python virtenv/Scripts/activate
   ```
-  - 3 clonner le depot
+- 3 clonner le depot
+```bash
+git clone https://github.com/drbea/task_manager.git
+```
+
   
