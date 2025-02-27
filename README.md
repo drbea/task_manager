@@ -6,4 +6,16 @@
 ```bash
   python -m venv virtenv
 ```
-__virtenv est le nom de l'environement virtuelle (vous pouver le changer)__
+    virtenv est le nom de l'environement virtuelle (vous pouver le changer)
+
+- 2 activer l'environement virtuelle
+      sous linux
+  ```bash
+  python virtenv/bin/activate
+  ```
+        sous windows
+  ```bash
+  python virtenv/Scripts/activate
+  ```
+  - 3 clonner le depot
+  
